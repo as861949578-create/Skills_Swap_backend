@@ -1,11 +1,15 @@
-HELP.md
+# Exclude build directories
 target/
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
-#src/main/resources/application.properties
 
-### STS ###
+# Exclude IDE specific files and folders
+.idea
+*.iws
+*.iml
+*.ipr
+.vscode/
+build/
+
+# Exclude Maven/Gradle wrapper files if not required
 .apt_generated
 .classpath
 .factorypath
@@ -14,21 +18,12 @@ target/
 .springBeans
 .sts4-cache
 
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
-
-### NetBeans ###
+# Exclude NetBeans-specific directories
 /nbproject/private/
 /nbbuild/
 /dist/
 /nbdist/
 /.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
 
-### VS Code ###
-.vscode/
+# Include Maven wrapper if needed
+!.mvn/wrapper/maven-wrapper.jar
