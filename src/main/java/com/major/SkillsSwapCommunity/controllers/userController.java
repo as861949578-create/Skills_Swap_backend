@@ -41,7 +41,7 @@ public class userController {
             @RequestHeader("Authorization") String tokenHeader,
             @RequestBody userDetailsUpdate updatedUser) {
 
-        System.out.println("Received update request for user: " + updatedUser);
+//        System.out.println("Received update request for user: " + updatedUser);
 
         ResponseEntity<ApiResponse<Optional<UserDetails>>> checkResponse = UserService.check(tokenHeader);
 

@@ -32,7 +32,7 @@ public class jwtUtils {
                 .header().empty().add("typ ","JWT")
                 .and()
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60  * 60))
+//                .expiration(new Date(System.currentTimeMillis() + 1000 * 60  * 60))
                 .signWith(getSignkey())
                 .compact();
     }
@@ -62,5 +62,13 @@ public class jwtUtils {
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
+    }
+    public Boolean validateTokenWithEmail(String emailFromDB,String token) {
+        try {
+            String emailFromToken = extractEmail(token);
+            return emailFromToken.equals(emailFromDB);
+        } catch (JwtException | IllegalArgumentException e) {
+            return false;
+        }
     }
 }

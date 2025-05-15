@@ -40,7 +40,7 @@ public class searchSkillsController {
         }
         String token = tokenHeader.substring(7);
         String email = "";
-        if (JwtUtils.validateToken(token) && skill != null) {
+        if (JwtUtils.validateTokenWithEmail(email,tokenHeader) && skill != null) {
              email = JwtUtils.extractEmail(token);
             List<UserDetails> users = SkillsSearchService.findBySkillsContaining(skill, email);
             return ResponseEntity.ok(new ApiResponse<>(true, "Saare users aa chuke hai", users));

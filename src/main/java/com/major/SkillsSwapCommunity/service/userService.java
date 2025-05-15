@@ -22,9 +22,6 @@ public class userService {
     public Optional<UserDetails> findByEmail(String email){
         return AuthRepo.findByEmailIgnoreCase(email);
     }
-//    public Optional<UserDetails>findById(ObjectId id){
-//        return AuthRepo.findById(id);
-//    }
     public void save(UserDetails User){
         AuthRepo.save(User);
     }
@@ -36,8 +33,8 @@ public class userService {
         }
 
         String token = tokenHeader.substring(7);
-
-        if (!JwtUtils.validateToken(token)) {
+        String email = JwtUtils.extractEmail(token);
+        if (!JwtUtils.validateTokenWithEmail(email,token)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(new ApiResponse<>(false, "Token is invalid or expired", Optional.empty()));
         }
