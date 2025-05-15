@@ -39,7 +39,7 @@ public class userService {
                     .body(new ApiResponse<>(false, "Token is invalid or expired", Optional.empty()));
         }
 
-        String email = JwtUtils.extractEmail(token);
+//        String email = JwtUtils.extractEmail(token);
         Optional<UserDetails> currentUserDetails = findByEmail(email);
 
         return ResponseEntity.status(HttpStatus.ACCEPTED)
