@@ -33,7 +33,7 @@ public class userController {
 
     @GetMapping("/profile")
     public ResponseEntity<?> getProfile(@RequestHeader("Authorization") String tokenHeader) {
-        System.out.println("toke is "+ tokenHeader);
+//        System.out.println("toke is "+ tokenHeader);
 
         return UserService.check(tokenHeader);
     }

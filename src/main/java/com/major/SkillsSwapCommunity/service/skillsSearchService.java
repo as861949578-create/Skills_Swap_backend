@@ -16,12 +16,12 @@ public class skillsSearchService {
     @Autowired
     private skillsSearchRepo SkillsSearchRepo;
 
-    public List<UserDetails> findBySkillsContaining(String skill){
-        return  SkillsSearchRepo.findBySkillsContaining(skill);
+    public List<UserDetails> findBySkillsContaining(String skill,String email){
+        return  SkillsSearchRepo.findBySkillsContainingAndEmailNot(skill,email);
     }
 
-    public List<UserDetails>getAllUsers(){
-        return SkillsSearchRepo.findAll();
+    public List<UserDetails>getAllUsers(String email){
+        return SkillsSearchRepo.findAllExcludingEmail(email);
     }
     @Autowired
     private MongoTemplate mongoTemplate;
