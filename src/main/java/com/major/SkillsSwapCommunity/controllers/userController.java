@@ -33,14 +33,13 @@ public class userController {
 
     @GetMapping("/profile")
     public ResponseEntity<?> getProfile(@RequestHeader("Authorization") String tokenHeader) {
-//        System.out.println("toke is "+ tokenHeader);
 
         return UserService.check(tokenHeader);
     }
 
     @PutMapping("/update")
     public ResponseEntity<?> userProfileUpdate(@RequestHeader("Authorization") String tokenHeader, @RequestBody userDetailsUpdate updatedUser) {
-
+        System.out.println("updated user details " + updatedUser);
         ResponseEntity<?> checkResponse = UserService.check(tokenHeader);
         HttpStatus status = (HttpStatus) checkResponse.getStatusCode();
         String message = (String) checkResponse.getBody();
@@ -48,9 +47,10 @@ public class userController {
         if (status == HttpStatus.BAD_REQUEST || status == HttpStatus.UNAUTHORIZED) {
             return ResponseEntity.ok(new ApiResponse<>(false,message,null));
         }
+        System.out.println("step1");
 
         @SuppressWarnings("unchecked")
-        Optional<User> optionalUser = (Optional<User>) checkResponse.getBody();
+        Optional<UserDetails> optionalUser = (Optional<UserDetails>) checkResponse.getBody();
 
 
         if (optionalUser.isEmpty()) {
