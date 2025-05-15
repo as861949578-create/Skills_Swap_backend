@@ -23,13 +23,12 @@ public class searchSkillsController {
         return ResponseEntity.ok(new ApiResponse<>(true,"Saari Skills aa chuki hai",skills));
     }
 
-    @GetMapping("/search-user/{skill}")
-    public ResponseEntity<?> getAllUsersBySkill(@PathVariable String skill) {
+    @GetMapping("/search-user")
+    public ResponseEntity<?> getAllUsersBySkill(@RequestParam String skill) {
         if(skill == null){
           List<UserDetails> allUsers = SkillsSearchService.getAllUsers();
           return ResponseEntity.ok(new ApiResponse<>(true,"All Users Find Successfully",allUsers));
         }
-
 
         List<UserDetails> users = SkillsSearchService.findBySkillsContaining(skill);
 
