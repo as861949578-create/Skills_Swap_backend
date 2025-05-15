@@ -1,5 +1,6 @@
 package com.major.SkillsSwapCommunity.service;
 
+import com.major.SkillsSwapCommunity.entity.ApiResponse;
 import com.major.SkillsSwapCommunity.entity.UserDetails;
 import com.major.SkillsSwapCommunity.jwtUtils.jwtUtils;
 import com.major.SkillsSwapCommunity.repository.authRepo;
@@ -28,17 +29,24 @@ public class userService {
         AuthRepo.save(User);
     }
 
-    public ResponseEntity<?> check(String tokenHeader) {
-
+    public ResponseEntity<ApiResponse<Optional<UserDetails>>> check(String tokenHeader) {
         if (tokenHeader == null || !tokenHeader.startsWith("Bearer ")) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Missing token");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ApiResponse<>(false, "Missing token", Optional.empty()));
         }
+
         String token = tokenHeader.substring(7);
-        if (JwtUtils.validateToken(token)) {
-            String email = JwtUtils.extractEmail(token);
-            Optional<UserDetails> currentUserDetails = findByEmail(email);
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body(currentUserDetails);
+
+        if (!JwtUtils.validateToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new ApiResponse<>(false, "Token is invalid or expired", Optional.empty()));
         }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("token is null or invalidate");
+
+        String email = JwtUtils.extractEmail(token);
+        Optional<UserDetails> currentUserDetails = findByEmail(email);
+
+        return ResponseEntity.status(HttpStatus.ACCEPTED)
+                .body(new ApiResponse<>(true, "User found", currentUserDetails));
     }
+
 }

@@ -33,39 +33,50 @@ public class userController {
 
     @GetMapping("/profile")
     public ResponseEntity<?> getProfile(@RequestHeader("Authorization") String tokenHeader) {
-
         return UserService.check(tokenHeader);
     }
 
     @PutMapping("/update")
-    public ResponseEntity<?> userProfileUpdate(@RequestHeader("Authorization") String tokenHeader, @RequestBody userDetailsUpdate updatedUser) {
-        System.out.println("updated user details " + updatedUser);
-        ResponseEntity<?> checkResponse = UserService.check(tokenHeader);
+    public ResponseEntity<ApiResponse<UserDetails>> userProfileUpdate(
+            @RequestHeader("Authorization") String tokenHeader,
+            @RequestBody userDetailsUpdate updatedUser) {
+
+        System.out.println("Received update request for user: " + updatedUser);
+
+        ResponseEntity<ApiResponse<Optional<UserDetails>>> checkResponse = UserService.check(tokenHeader);
+
+        // Step 1: Validate token and extract user info
         HttpStatus status = (HttpStatus) checkResponse.getStatusCode();
-        String message = (String) checkResponse.getBody();
+        ApiResponse<Optional<UserDetails>> responseBody = checkResponse.getBody();
+
+        if (responseBody == null) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponse<>(false, "Unexpected error", null));
+        }
 
         if (status == HttpStatus.BAD_REQUEST || status == HttpStatus.UNAUTHORIZED) {
-            return ResponseEntity.ok(new ApiResponse<>(false,message,null));
+            return ResponseEntity.status(status)
+                    .body(new ApiResponse<>(false, responseBody.getMessage(), null));
         }
-        System.out.println("step1");
 
-        @SuppressWarnings("unchecked")
-        Optional<UserDetails> optionalUser = (Optional<UserDetails>) checkResponse.getBody();
-
+        Optional<UserDetails> optionalUser = responseBody.getData();
 
         if (optionalUser.isEmpty()) {
-            return ResponseEntity.ok(new ApiResponse<>(false,"user not found",null));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ApiResponse<>(false, "User not found", null));
         }
 
-        UserDetails existingUser = (UserDetails) optionalUser.get();
-
+        // Step 2: Update the fields
+        UserDetails existingUser = optionalUser.get();
         existingUser.setName(updatedUser.getName());
         existingUser.setSkills(updatedUser.getSkills());
         existingUser.setContact(updatedUser.getContact());
 
+        // Step 3: Save the user
         UserService.save(existingUser);
-     return ResponseEntity.ok(new ApiResponse<>(true,"update ho gaya ! Heera Bete",existingUser));
 
+        return ResponseEntity.ok(new ApiResponse<>(true, "Update successful", existingUser));
     }
+
 }
 
