@@ -1,5 +1,6 @@
 package com.major.SkillsSwapCommunity.controllers;
 
+import com.major.SkillsSwapCommunity.entity.ApiResponse;
 import com.major.SkillsSwapCommunity.entity.UserDetails;
 import com.major.SkillsSwapCommunity.entity.userDetailsUpdate;
 import com.major.SkillsSwapCommunity.jwtUtils.jwtUtils;
@@ -42,9 +43,10 @@ public class userController {
 
         ResponseEntity<?> checkResponse = UserService.check(tokenHeader);
         HttpStatus status = (HttpStatus) checkResponse.getStatusCode();
+        String message = (String) checkResponse.getBody();
 
         if (status == HttpStatus.BAD_REQUEST || status == HttpStatus.UNAUTHORIZED) {
-            return checkResponse; // directly return the error response
+            return ResponseEntity.ok(new ApiResponse<>(false,message,null));
         }
 
         @SuppressWarnings("unchecked")
@@ -52,7 +54,7 @@ public class userController {
 
 
         if (optionalUser.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+            return ResponseEntity.ok(new ApiResponse<>(false,"user not found",null));
         }
 
         UserDetails existingUser = (UserDetails) optionalUser.get();
@@ -62,8 +64,8 @@ public class userController {
         existingUser.setContact(updatedUser.getContact());
 
         UserService.save(existingUser);
+     return ResponseEntity.ok(new ApiResponse<>(true,"update ho gaya ! Heera Bete",existingUser));
 
-        return ResponseEntity.ok(existingUser);
     }
 }
 

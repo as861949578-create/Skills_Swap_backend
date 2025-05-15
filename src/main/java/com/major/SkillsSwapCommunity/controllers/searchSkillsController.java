@@ -19,7 +19,7 @@ public class searchSkillsController {
 
     @GetMapping("/all-skill")
     public ResponseEntity<?> GetAllSkills(){
-        List<String>skills = SkillsSearchService.getAllDistinctSkills();;
+        List<String>skills = SkillsSearchService.getAllDistinctSkills();
         return ResponseEntity.ok(new ApiResponse<>(true,"Saari Skills aa chuki hai",skills));
     }
 

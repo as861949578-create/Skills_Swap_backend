@@ -31,17 +31,14 @@ public class userService {
     public ResponseEntity<?> check(String tokenHeader) {
 
         if (tokenHeader == null || !tokenHeader.startsWith("Bearer ")) {
-//            System.out.println("step1");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Missing token");
         }
         String token = tokenHeader.substring(7);
         if (JwtUtils.validateToken(token)) {
-            System.out.println("step2");
             String email = JwtUtils.extractEmail(token);
             Optional<UserDetails> currentUserDetails = findByEmail(email);
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(currentUserDetails);
         }
-//        System.out.println("step3");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("token is null or invalidate");
     }
 }
