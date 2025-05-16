@@ -1,6 +1,7 @@
 package com.major.SkillsSwapCommunity.jwtUtils;
 
 import com.major.SkillsSwapCommunity.entity.UserDetails;
+import com.major.SkillsSwapCommunity.repository.authRepo;
 import com.major.SkillsSwapCommunity.service.userService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
@@ -22,7 +23,7 @@ public class jwtUtils {
     private String SECRET_KEY;
 
     @Autowired
-    private userService UserService;
+    private authRepo AuthRepo;
 
     private SecretKey getSignkey(){
         return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
@@ -75,7 +76,8 @@ public class jwtUtils {
 
             String emailFromToken = extractEmail(token);
             // Check if user exists in DB with this email
-            Optional<UserDetails> userOptional = UserService.findByEmail(emailFromToken);
+            Optional<UserDetails> userOptional = AuthRepo.findByEmailIgnoreCase(emailFromToken);
+
             return userOptional.isPresent();
 //            return emailFromToken.equals(emailFromDB);
         } catch (JwtException | IllegalArgumentException e) {
