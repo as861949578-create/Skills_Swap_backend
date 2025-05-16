@@ -1,9 +1,12 @@
 package com.major.SkillsSwapCommunity.jwtUtils;
 
+import com.major.SkillsSwapCommunity.entity.UserDetails;
+import com.major.SkillsSwapCommunity.service.userService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -11,11 +14,15 @@ import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Component
 public class jwtUtils {
     @Value("${spring.secret.key}")
     private String SECRET_KEY;
+
+    @Autowired
+    private userService UserService;
 
     private SecretKey getSignkey(){
         return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
@@ -63,10 +70,14 @@ public class jwtUtils {
                 .parseSignedClaims(token)
                 .getPayload();
     }
-    public Boolean validateTokenWithEmail(String emailFromDB,String token) {
+    public Boolean validateTokenWithEmail(String token) {
         try {
+
             String emailFromToken = extractEmail(token);
-            return emailFromToken.equals(emailFromDB);
+            // Check if user exists in DB with this email
+            Optional<UserDetails> userOptional = UserService.findByEmail(emailFromToken);
+            return userOptional.isPresent();
+//            return emailFromToken.equals(emailFromDB);
         } catch (JwtException | IllegalArgumentException e) {
             return false;
         }

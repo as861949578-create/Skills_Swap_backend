@@ -34,7 +34,8 @@ public class userService {
 
         String token = tokenHeader.substring(7);
         String email = JwtUtils.extractEmail(token);
-        if (!JwtUtils.validateTokenWithEmail(email,token)) {
+
+        if (!JwtUtils.validateTokenWithEmail(token)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(new ApiResponse<>(false, "Token is invalid or expired", Optional.empty()));
         }
@@ -45,5 +46,4 @@ public class userService {
         return ResponseEntity.status(HttpStatus.ACCEPTED)
                 .body(new ApiResponse<>(true, "User found", currentUserDetails));
     }
-
 }
