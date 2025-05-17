@@ -36,6 +36,7 @@ public class userController {
 
     @GetMapping("/profile")
     public ResponseEntity<?> getProfile(@RequestHeader("Authorization") String tokenHeader) {
+        System.out.println("token issss " + tokenHeader);
         return UserService.check(tokenHeader);
     }
 
@@ -74,7 +75,6 @@ public class userController {
 
 
     @GetMapping("/get-someone-profile")
-
     public ResponseEntity<?> getSomeoneProfile(@RequestParam String email){
         if(email.isEmpty()){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).
@@ -84,7 +84,7 @@ public class userController {
         Optional<UserDetails> user = UserService.findByEmail(email);
 
         if(user.isEmpty()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).
                     body(new ApiResponse<>(false,"Email farzi hai, user nahi mila",null));
         }
         else{
@@ -93,6 +93,5 @@ public class userController {
             return ResponseEntity.ok(new ApiResponse<>(true,"user mil gaya",userDetailsWithoutPassword));
         }
     }
-
 }
 

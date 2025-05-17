@@ -28,6 +28,7 @@ public class userService {
 
     public ResponseEntity<ApiResponse<UserDetails>> check(String tokenHeader) {
         if (tokenHeader == null || !tokenHeader.startsWith("Bearer ")) {
+            System.out.println("yaha aayaa..");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(new ApiResponse<>(false, "Missing token", null));
         }
@@ -49,7 +50,7 @@ public class userService {
             return ResponseEntity.status(HttpStatus.FOUND)
                     .body(new ApiResponse<>(true, "User found", userWithoutPassword));
         }else{
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(new ApiResponse<>(false, "User not found", null));
         }
     }
