@@ -26,10 +26,10 @@ public class userService {
         AuthRepo.save(User);
     }
 
-    public ResponseEntity<ApiResponse<Optional<UserDetails>>> check(String tokenHeader) {
+    public ResponseEntity<ApiResponse<UserDetails>> check(String tokenHeader) {
         if (tokenHeader == null || !tokenHeader.startsWith("Bearer ")) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(new ApiResponse<>(false, "Missing token", Optional.empty()));
+                    .body(new ApiResponse<>(false, "Missing token", null));
         }
 
         String token = tokenHeader.substring(7);
@@ -37,13 +37,20 @@ public class userService {
 
         if (!JwtUtils.validateTokenWithEmail(token)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(new ApiResponse<>(false, "Token is invalid or expired", Optional.empty()));
+                    .body(new ApiResponse<>(false, "Token is invalid or expired", null));
         }
 
 //        String email = JwtUtils.extractEmail(token);
         Optional<UserDetails> currentUserDetails = findByEmail(email);
 
-        return ResponseEntity.status(HttpStatus.ACCEPTED)
-                .body(new ApiResponse<>(true, "User found", currentUserDetails));
+        if(currentUserDetails.isPresent()) {
+            UserDetails userWithoutPassword = currentUserDetails.get();
+            userWithoutPassword.setPassword(null);
+            return ResponseEntity.status(HttpStatus.FOUND)
+                    .body(new ApiResponse<>(true, "User found", userWithoutPassword));
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ApiResponse<>(false, "User not found", null));
+        }
     }
 }

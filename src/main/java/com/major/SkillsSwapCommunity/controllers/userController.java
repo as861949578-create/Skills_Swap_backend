@@ -7,6 +7,7 @@ import com.major.SkillsSwapCommunity.jwtUtils.jwtUtils;
 import com.major.SkillsSwapCommunity.passwordUtils.passwordUtils;
 import com.major.SkillsSwapCommunity.service.userService;
 import org.apache.catalina.User;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.http.HttpStatus;
@@ -43,33 +44,24 @@ public class userController {
             @RequestHeader("Authorization") String tokenHeader,
             @RequestBody userDetailsUpdate updatedUser) {
 
-//        System.out.println("Received update request for user: " + updatedUser);
-
-        ResponseEntity<ApiResponse<Optional<UserDetails>>> checkResponse = UserService.check(tokenHeader);
-
         // Step 1: Validate token and extract user info
+        ResponseEntity<ApiResponse<UserDetails>> checkResponse = UserService.check(tokenHeader);
+
         HttpStatus status = (HttpStatus) checkResponse.getStatusCode();
-        ApiResponse<Optional<UserDetails>> responseBody = checkResponse.getBody();
+        ApiResponse<UserDetails> responseBody = checkResponse.getBody();
 
         if (responseBody == null) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ApiResponse<>(false, "Unexpected error", null));
         }
 
-        if (status == HttpStatus.BAD_REQUEST || status == HttpStatus.UNAUTHORIZED) {
+        if (!responseBody.getSuccess() || responseBody.getData() == null) {
             return ResponseEntity.status(status)
                     .body(new ApiResponse<>(false, responseBody.getMessage(), null));
         }
 
-        Optional<UserDetails> optionalUser = responseBody.getData();
-
-        if (optionalUser.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ApiResponse<>(false, "User not found", null));
-        }
-
         // Step 2: Update the fields
-        UserDetails existingUser = optionalUser.get();
+        UserDetails existingUser = responseBody.getData();
         existingUser.setName(updatedUser.getName());
         existingUser.setSkills(updatedUser.getSkills());
         existingUser.setContact(updatedUser.getContact());
@@ -79,6 +71,7 @@ public class userController {
 
         return ResponseEntity.ok(new ApiResponse<>(true, "Update successful", existingUser));
     }
+
 
     @GetMapping("/get-someone-profile")
 
@@ -91,15 +84,14 @@ public class userController {
         Optional<UserDetails> user = UserService.findByEmail(email);
 
         if(user.isEmpty()){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).
                     body(new ApiResponse<>(false,"Email farzi hai, user nahi mila",null));
         }
         else{
-
-            return ResponseEntity.ok(new ApiResponse<>(true,"user mil gaya",user));
+             UserDetails userDetailsWithoutPassword = user.get();
+             userDetailsWithoutPassword.setPassword(null);
+            return ResponseEntity.ok(new ApiResponse<>(true,"user mil gaya",userDetailsWithoutPassword));
         }
-
-
     }
 
 }
