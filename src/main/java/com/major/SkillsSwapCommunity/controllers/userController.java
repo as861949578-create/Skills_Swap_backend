@@ -8,10 +8,12 @@ import com.major.SkillsSwapCommunity.passwordUtils.passwordUtils;
 import com.major.SkillsSwapCommunity.service.userService;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -76,6 +78,28 @@ public class userController {
         UserService.save(existingUser);
 
         return ResponseEntity.ok(new ApiResponse<>(true, "Update successful", existingUser));
+    }
+
+    @GetMapping("/get-someone-profile")
+
+    public ResponseEntity<?> getSomeoneProfile(@RequestParam String email){
+        if(email.isEmpty()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).
+                    body(new ApiResponse<>(false,"Email nahi aayi",null));
+        }
+
+        Optional<UserDetails> user = UserService.findByEmail(email);
+
+        if(user.isEmpty()){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).
+                    body(new ApiResponse<>(false,"Email farzi hai, user nahi mila",null));
+        }
+        else{
+
+            return ResponseEntity.ok(new ApiResponse<>(true,"user mil gaya",user));
+        }
+
+
     }
 
 }
