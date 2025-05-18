@@ -13,9 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.lang.String;
 import java.time.LocalDateTime;
 
@@ -165,6 +163,49 @@ public class swapRequests {
 
         }
     }
+   @PutMapping("/update-request/{id}")
+    public ResponseEntity<?> updateSwapRequest(@PathVariable("id") String requestId ,
+                                               @RequestBody Map<String , Object > reqBody,
+                                               @RequestHeader("Authorization") String tokenHeader
+   )
+   {
+       try{
 
+           if (tokenHeader == null || !tokenHeader.startsWith("Bearer ")) {
+               return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                       .body(new ApiResponse<>(false, "Missing token", null));
+           }
+           Boolean status = Boolean.parseBoolean(reqBody.get("status").toString());
+           Object offeredObj = reqBody.get("offeredSkill");
+           String offeredSkill =(offeredObj != null) ? offeredObj.toString() : "";
+           Optional<swapRequest> optionalRequest = SwapRequestService.findbyId(requestId);
+           if (optionalRequest.isEmpty()) {
+               return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                       .body(new ApiResponse<>(false, "No swap request present in db", null));
+           }
+
+           swapRequest request = optionalRequest.get();
+            if(status == true)
+           {
+
+              request.setOfferedSkill(offeredSkill);
+              request.setUpdatedAt(LocalDateTime.now());
+              request.setStatus("Accepted");
+               SwapRequestService.saveSwapRequests(request);
+
+           }else if(status == false)
+           {
+               request.setUpdatedAt(LocalDateTime.now());
+               request.setStatus("Rejected");
+               SwapRequestService.saveSwapRequests(request);
+           }
+           return ResponseEntity.ok(new ApiResponse<>(true,"succesfully updated request",request));
+
+
+       } catch (Exception e) {
+           return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                   .body(new ApiResponse<>(false,"Failed to update request",e.getMessage()));
+       }
+   }
 
 }
