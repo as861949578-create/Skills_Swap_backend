@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/skill-swap")
@@ -37,6 +39,17 @@ public class swapRequests {
 
              //set email as senderID from jwt token
              swapDetails.setSenderID(email);
+
+             if (swapDetails.getStatus() == null) {
+                 swapDetails.setStatus("pending");
+             }
+             if (swapDetails.getCreatedAt() == null) {
+                 swapDetails.setCreatedAt(LocalDateTime.now());
+             }
+             if(swapDetails.getOfferedSkill() == null){
+                 swapDetails.setOfferedSkill("");
+             }
+             swapDetails.setUpdatedAt(LocalDateTime.now());
              // save it into db -> controller ->service ->repo
              SwapRequestService.saveSwapRequests(swapDetails);
 
