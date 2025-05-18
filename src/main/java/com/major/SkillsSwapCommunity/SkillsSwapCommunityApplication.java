@@ -14,5 +14,4 @@ public class SkillsSwapCommunityApplication {
 		SpringApplication.run(SkillsSwapCommunityApplication.class, args);
 	}
 
-
 }

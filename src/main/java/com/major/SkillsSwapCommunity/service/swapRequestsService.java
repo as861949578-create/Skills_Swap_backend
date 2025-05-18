@@ -23,6 +23,6 @@ public class swapRequestsService {
 
 
     public List<swapRequest> findAll(String email) {
-       return SwapRequestRepo.findByreceiverID(email);
+       return SwapRequestRepo.findByReceiverID(email);
     }
 }

@@ -70,7 +70,7 @@ public class swapRequests {
                      .body(new ApiResponse<>(false,"Failed to save swap request",e.getMessage()));
          }
     }
-    @GetMapping("/getallrequest")
+    @GetMapping("/get-all-request")
     public ResponseEntity<?> GetAllRequest( @RequestHeader("Authorization") String tokenHeader)
     {
        try{
@@ -80,22 +80,13 @@ public class swapRequests {
            }
            String token = tokenHeader.substring(7);
            String email = JwtUtils.extractEmail(token);
-//           private ObjectId id;
-//
-//           private String senderID = "example@gmail.com";
-//           private String receiverID;
-//           private String requestedSkill ;
-//           private String offeredSkill = null;
-//           private String message;
-//           private String status = "pending";
            List<SwapRequestCardDTO> response = new ArrayList<>();
            List<swapRequest> requests = SwapRequestService.findAll(email);
            for(var request : requests)
            {
-
                Optional<UserDetails> sender = AuthService.findbymail(request.getSenderID());
                Optional<UserDetails> receiver = AuthService.findbymail(request.getReceiverID());
-               if (sender.isPresent() && sender.isPresent()) {
+               if (sender.isPresent() && receiver.isPresent()) {
                    response.add(new SwapRequestCardDTO(request, sender.get(), receiver.get()));
                }
            }

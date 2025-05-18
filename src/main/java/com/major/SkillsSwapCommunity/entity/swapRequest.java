@@ -11,10 +11,6 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 @Document(collection = "SkillSwapRequests")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class swapRequest {
 
     @Id
