@@ -8,7 +8,6 @@ import com.major.SkillsSwapCommunity.entity.swapRequest;
 import com.major.SkillsSwapCommunity.jwtUtils.jwtUtils;
 import com.major.SkillsSwapCommunity.service.authService;
 import com.major.SkillsSwapCommunity.service.swapRequestsService;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -80,22 +79,19 @@ public class swapRequests {
            }
            String token = tokenHeader.substring(7);
            String email = JwtUtils.extractEmail(token);
-//           private ObjectId id;
-//
-//           private String senderID = "example@gmail.com";
-//           private String receiverID;
-//           private String requestedSkill ;
-//           private String offeredSkill = null;
-//           private String message;
-//           private String status = "pending";
+
            List<SwapRequestCardDTO> response = new ArrayList<>();
-           List<swapRequest> requests = SwapRequestService.findAll(email);
-           for(var request : requests)
+           List<swapRequest> receivedRequests = SwapRequestService.findAllreceiver(email);
+           List<swapRequest> sentRequests = SwapRequestService.findAllsender(email);
+           List<swapRequest> allRequests = new ArrayList<>();
+           allRequests.addAll(receivedRequests);
+           allRequests.addAll(sentRequests);
+           for(var request : allRequests)
            {
 
                Optional<UserDetails> sender = AuthService.findbymail(request.getSenderID());
                Optional<UserDetails> receiver = AuthService.findbymail(request.getReceiverID());
-               if (sender.isPresent() && sender.isPresent()) {
+               if (sender.isPresent() && receiver.isPresent()) {
                    response.add(new SwapRequestCardDTO(request, sender.get(), receiver.get()));
                }
            }
@@ -106,6 +102,68 @@ public class swapRequests {
                    .body(new ApiResponse<>(false,"Failed to fetched",e.getMessage()));
 
        }
+    }
+
+    @GetMapping("/sent-requests")
+    public ResponseEntity<?> GetAllSentRequest( @RequestHeader("Authorization") String tokenHeader)
+    {
+        try{
+            if (tokenHeader == null || !tokenHeader.startsWith("Bearer ")) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(new ApiResponse<>(false, "Missing token", null));
+            }
+            String token = tokenHeader.substring(7);
+            String email = JwtUtils.extractEmail(token);
+
+            List<SwapRequestCardDTO> response = new ArrayList<>();
+            List<swapRequest> sentRequests = SwapRequestService.findAllsender(email);
+            for(var request : sentRequests)
+            {
+
+                Optional<UserDetails> sender = AuthService.findbymail(request.getSenderID());
+                Optional<UserDetails> receiver = AuthService.findbymail(request.getReceiverID());
+                if (sender.isPresent() && receiver.isPresent()) {
+                    response.add(new SwapRequestCardDTO(request, sender.get(), receiver.get()));
+                }
+            }
+            return ResponseEntity.ok(new ApiResponse<>(true,"succesfully fetched all send requests",response));
+        }catch(Exception e)
+        {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponse<>(false,"Failed to fetched send requests",e.getMessage()));
+
+        }
+    }
+
+    @GetMapping("/received-requests")
+    public ResponseEntity<?> GetAllReceivedRequest( @RequestHeader("Authorization") String tokenHeader)
+    {
+        try{
+            if (tokenHeader == null || !tokenHeader.startsWith("Bearer ")) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(new ApiResponse<>(false, "Missing token", null));
+            }
+            String token = tokenHeader.substring(7);
+            String email = JwtUtils.extractEmail(token);
+
+            List<SwapRequestCardDTO> response = new ArrayList<>();
+            List<swapRequest> receivedRequests = SwapRequestService.findAllreceiver(email);
+            for(var request : receivedRequests)
+            {
+
+                Optional<UserDetails> sender = AuthService.findbymail(request.getSenderID());
+                Optional<UserDetails> receiver = AuthService.findbymail(request.getReceiverID());
+                if (sender.isPresent() && receiver.isPresent()) {
+                    response.add(new SwapRequestCardDTO(request, sender.get(), receiver.get()));
+                }
+            }
+            return ResponseEntity.ok(new ApiResponse<>(true,"succesfully fetched all received requests",response));
+        }catch(Exception e)
+        {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponse<>(false,"Failed to fetched received requests",e.getMessage()));
+
+        }
     }
 
 

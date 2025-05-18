@@ -10,6 +10,7 @@ import java.util.List;
 @Repository
 public interface swapRequestsRepo extends MongoRepository<swapRequest,ObjectId> {
     List<swapRequest> findByreceiverID(String email);
+    List<swapRequest> findBysenderID(String email);
 //    List<swapRequest> findByReceiverID(String receiverID);
 
 }

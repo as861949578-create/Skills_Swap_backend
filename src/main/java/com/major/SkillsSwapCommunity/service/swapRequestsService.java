@@ -3,10 +3,8 @@ package com.major.SkillsSwapCommunity.service;
 import com.major.SkillsSwapCommunity.entity.swapRequest;
 import com.major.SkillsSwapCommunity.repository.swapRequestsRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -22,7 +20,11 @@ public class swapRequestsService {
     }
 
 
-    public List<swapRequest> findAll(String email) {
+    public List<swapRequest> findAllreceiver(String email) {
        return SwapRequestRepo.findByreceiverID(email);
+    }
+
+    public List<swapRequest> findAllsender(String email) {
+        return SwapRequestRepo.findBysenderID(email);
     }
 }
