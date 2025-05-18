@@ -3,6 +3,7 @@ package com.major.SkillsSwapCommunity.controllers;
 import com.major.SkillsSwapCommunity.entity.ApiResponse;
 import com.major.SkillsSwapCommunity.entity.UserDetails;
 import com.major.SkillsSwapCommunity.entity.userDetailsUpdate;
+import com.major.SkillsSwapCommunity.entity.userStatus;
 import com.major.SkillsSwapCommunity.jwtUtils.jwtUtils;
 import com.major.SkillsSwapCommunity.passwordUtils.passwordUtils;
 import com.major.SkillsSwapCommunity.service.userService;
@@ -36,7 +37,7 @@ public class userController {
 
     @GetMapping("/profile")
     public ResponseEntity<?> getProfile(@RequestHeader("Authorization") String tokenHeader) {
-        System.out.println("token issss " + tokenHeader);
+//        System.out.println("token issss " + tokenHeader);
         return UserService.check(tokenHeader);
     }
 
@@ -72,6 +73,16 @@ public class userController {
 
         return ResponseEntity.ok(new ApiResponse<>(true, "Update successful", existingUser));
     }
+
+    @PutMapping("/edit-status")
+    public ResponseEntity<?>editUserStatus(
+            @RequestHeader("Authorization") String tokenHeader,
+            @RequestBody userStatus UserStatusDetails
+    ){
+        // yaha likhna update la
+    }
+
+
 
 
     @GetMapping("/get-someone-profile")

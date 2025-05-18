@@ -73,6 +73,8 @@ public class UserDetails {
     private String name;
     private String email;
     private String contact;
+    private String password;
+    private List<String> skills ;
 
     public String getPassword() {
         return password;
@@ -82,8 +84,7 @@ public class UserDetails {
         this.password = password;
     }
 
-    private String password;
-    private List<String> skills ;
+
 
     //no args cons
     public UserDetails() {
