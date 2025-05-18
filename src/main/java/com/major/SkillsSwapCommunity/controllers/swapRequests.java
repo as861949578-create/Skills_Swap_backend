@@ -69,7 +69,7 @@ public class swapRequests {
                      .body(new ApiResponse<>(false,"Failed to save swap request",e.getMessage()));
          }
     }
-    @GetMapping("/getallrequest")
+    @GetMapping("/get-all-request")
     public ResponseEntity<?> GetAllRequest( @RequestHeader("Authorization") String tokenHeader)
     {
        try{
