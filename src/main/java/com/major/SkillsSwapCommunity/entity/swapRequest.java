@@ -14,7 +14,7 @@ import java.util.Date;
 public class swapRequest {
 
     @Id
-    private ObjectId id;
+    private String id;
 
     private String senderID = "example@gmail.com";
     private String receiverID;
@@ -26,11 +26,11 @@ public class swapRequest {
     private LocalDateTime createdAt = LocalDateTime.now() ;
     private LocalDateTime updatedAt = LocalDateTime.now();
 
-    public ObjectId getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(ObjectId id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -98,7 +98,7 @@ public class swapRequest {
         this.updatedAt = updatedAt;
     }
 
-    public swapRequest(ObjectId id, String senderID, String receiverID, String requestedSkill, String offeredSkill, String message, String status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public swapRequest(String id, String senderID, String receiverID, String requestedSkill, String offeredSkill, String message, String status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.senderID = senderID;
         this.receiverID = receiverID;

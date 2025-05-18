@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.repository.Query;
 
 import java.util.List;
 
-public interface skillsSearchRepo extends MongoRepository<UserDetails, ObjectId> {
+public interface skillsSearchRepo extends MongoRepository<UserDetails, String> {
     @Query("{ 'skills': { $regex: ?0, $options: 'i' }, 'email': { $ne: ?1 } }")
     List<UserDetails> findBySkillsContainingAndEmailNot(String skill, String email);
 

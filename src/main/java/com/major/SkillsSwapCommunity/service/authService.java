@@ -69,8 +69,7 @@ public class authService {
 
 
         String hashPassword = PasswordUtils.hashPassword(signupRequest.getPassword());
-        UserDetails user = new UserDetails(
-                new ObjectId(), signupRequest.getName(),signupRequest.getEmail(),
+        UserDetails user = new UserDetails(signupRequest.getName(),signupRequest.getEmail(),
                 signupRequest.getContact(),signupRequest.getSkills(),hashPassword);
 
         AuthRepo.save(user);
