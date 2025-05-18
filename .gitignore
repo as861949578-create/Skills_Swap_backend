@@ -11,8 +11,6 @@ build/
 
 # Ignore all dev-specific profiles
 src/main/resources/application-dev*.properties
-
-
 # Exclude Maven/Gradle wrapper files if not required
 .apt_generated
 .classpath
