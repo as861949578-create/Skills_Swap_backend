@@ -185,7 +185,7 @@ public class swapRequests {
            }
 
            swapRequest request = optionalRequest.get();
-            if(status == true)
+            if(status)
            {
 
               request.setOfferedSkill(offeredSkill);
@@ -193,7 +193,7 @@ public class swapRequests {
               request.setStatus("Accepted");
                SwapRequestService.saveSwapRequests(request);
 
-           }else if(status == false)
+           }else if(!status)
            {
                request.setUpdatedAt(LocalDateTime.now());
                request.setStatus("Rejected");
@@ -207,5 +207,4 @@ public class swapRequests {
                    .body(new ApiResponse<>(false,"Failed to update request",e.getMessage()));
        }
    }
-
 }
