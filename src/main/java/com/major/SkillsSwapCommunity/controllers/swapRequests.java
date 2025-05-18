@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.lang.String;
+import java.time.LocalDateTime;
+
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/skill-swap")
@@ -47,6 +49,17 @@ public class swapRequests {
 
              //set email as senderID from jwt token
              swapDetails.setSenderID(email);
+
+             if (swapDetails.getStatus() == null) {
+                 swapDetails.setStatus("pending");
+             }
+             if (swapDetails.getCreatedAt() == null) {
+                 swapDetails.setCreatedAt(LocalDateTime.now());
+             }
+             if(swapDetails.getOfferedSkill() == null){
+                 swapDetails.setOfferedSkill("");
+             }
+             swapDetails.setUpdatedAt(LocalDateTime.now());
              // save it into db -> controller ->service ->repo
              SwapRequestService.saveSwapRequests(swapDetails);
 

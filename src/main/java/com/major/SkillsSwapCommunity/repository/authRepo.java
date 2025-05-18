@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.Optional;
 
-public interface authRepo extends MongoRepository<UserDetails, ObjectId> {
+public interface authRepo extends MongoRepository<UserDetails, String> {
      boolean existsByEmailIgnoreCase(String email);
      Optional<UserDetails> findByEmailIgnoreCase(String email);
 }

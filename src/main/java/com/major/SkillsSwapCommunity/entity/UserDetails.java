@@ -12,11 +12,11 @@ import java.util.List;
 @Document(collection = "users")
 public class UserDetails {
 
-    public ObjectId getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(ObjectId id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -52,7 +52,7 @@ public class UserDetails {
         this.skills = skills;
     }
 
-    public UserDetails(ObjectId id, String name, String email, String contact, List<String> skills,String password) {
+    public UserDetails(String id, String name, String email, String contact, List<String> skills,String password) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -61,7 +61,15 @@ public class UserDetails {
         this.password = password;
     }
 
-    private ObjectId id;
+    public UserDetails(String name, String email, String contact, List<String> skills,String password) {
+        this.name = name;
+        this.email = email;
+        this.contact = contact;
+        this.skills = skills;
+        this.password = password;
+    }
+
+    private String id;
     private String name;
     private String email;
     private String contact;
@@ -76,4 +84,9 @@ public class UserDetails {
 
     private String password;
     private List<String> skills ;
+
+    //no args cons
+    public UserDetails() {
+
+    }
 }
