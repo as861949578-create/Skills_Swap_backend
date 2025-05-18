@@ -2,24 +2,34 @@ package com.major.SkillsSwapCommunity.controllers;
 
 
 import com.major.SkillsSwapCommunity.entity.ApiResponse;
+import com.major.SkillsSwapCommunity.entity.SwapRequestCardDTO;
+import com.major.SkillsSwapCommunity.entity.UserDetails;
 import com.major.SkillsSwapCommunity.entity.swapRequest;
 import com.major.SkillsSwapCommunity.jwtUtils.jwtUtils;
+import com.major.SkillsSwapCommunity.service.authService;
 import com.major.SkillsSwapCommunity.service.swapRequestsService;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.lang.String;
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/skill-swap")
 public class swapRequests {
-
+    @Autowired
+    private authService AuthService;
     @Autowired
     private swapRequestsService SwapRequestService;
 
     @Autowired
     private jwtUtils JwtUtils;
+
 
     // receive --> sId, rID,msg,reqSkill
     @PostMapping("/request")
@@ -47,4 +57,43 @@ public class swapRequests {
                      .body(new ApiResponse<>(false,"Failed to save swap request",e.getMessage()));
          }
     }
+    @GetMapping("/getallrequest")
+    public ResponseEntity<?> GetAllRequest( @RequestHeader("Authorization") String tokenHeader)
+    {
+       try{
+           if (tokenHeader == null || !tokenHeader.startsWith("Bearer ")) {
+               return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                       .body(new ApiResponse<>(false, "Missing token", null));
+           }
+           String token = tokenHeader.substring(7);
+           String email = JwtUtils.extractEmail(token);
+//           private ObjectId id;
+//
+//           private String senderID = "example@gmail.com";
+//           private String receiverID;
+//           private String requestedSkill ;
+//           private String offeredSkill = null;
+//           private String message;
+//           private String status = "pending";
+           List<SwapRequestCardDTO> response = new ArrayList<>();
+           List<swapRequest> requests = SwapRequestService.findAll(email);
+           for(var request : requests)
+           {
+
+               Optional<UserDetails> sender = AuthService.findbymail(request.getSenderID());
+               Optional<UserDetails> receiver = AuthService.findbymail(request.getReceiverID());
+               if (sender.isPresent() && sender.isPresent()) {
+                   response.add(new SwapRequestCardDTO(request, sender.get(), receiver.get()));
+               }
+           }
+           return ResponseEntity.ok(new ApiResponse<>(true,"succesfully fetched requests",response));
+       }catch(Exception e)
+       {
+           return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                   .body(new ApiResponse<>(false,"Failed to fetched",e.getMessage()));
+
+       }
+    }
+
+
 }

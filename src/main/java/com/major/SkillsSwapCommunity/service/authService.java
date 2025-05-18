@@ -1,6 +1,5 @@
 package com.major.SkillsSwapCommunity.service;
 
-import ch.qos.logback.core.encoder.EchoEncoder;
 import com.major.SkillsSwapCommunity.entity.ApiResponse;
 import com.major.SkillsSwapCommunity.entity.OtpDetails;
 import com.major.SkillsSwapCommunity.entity.UserDetails;
@@ -10,13 +9,12 @@ import com.major.SkillsSwapCommunity.passwordUtils.passwordUtils;
 import com.major.SkillsSwapCommunity.repository.authRepo;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLOutput;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
 
 @Service
@@ -139,5 +137,9 @@ public class authService {
             return ResponseEntity.ok(new ApiResponse<>(false,"Something went wrong",e));
         }
 
+    }
+    public Optional<UserDetails> findbymail(String email)
+    {
+        return AuthRepo.findByEmailIgnoreCase(email);
     }
 }

@@ -46,7 +46,10 @@ public class authController {
 
   @PostMapping("/login")
   public ResponseEntity<?> login(@RequestBody loginDto loginRequest){
+    System.out.println("aa gya");
+    System.out.println(loginRequest + "login");
     if(loginRequest.getEmail().isEmpty() || loginRequest.getPassword().isEmpty()){
+
       return ResponseEntity.ok(new ApiResponse<>(false,"Please enter your Credentials first",null));
     }
     return AuthService.login(loginRequest);
