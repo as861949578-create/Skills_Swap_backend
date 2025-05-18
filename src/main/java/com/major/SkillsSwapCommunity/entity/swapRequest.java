@@ -11,9 +11,9 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 @Document(collection = "SkillSwapRequests")
-@Getter
-@Setter
-@NoArgsConstructor
+//@Getter
+//@Setter
+//@NoArgsConstructor
 //@AllArgsConstructor
 public class swapRequest {
 
