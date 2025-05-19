@@ -74,13 +74,13 @@ public class userController {
         return ResponseEntity.ok(new ApiResponse<>(true, "Update successful", existingUser));
     }
 
-    @PutMapping("/edit-status")
-    public ResponseEntity<?>editUserStatus(
-            @RequestHeader("Authorization") String tokenHeader,
-            @RequestBody userStatus UserStatusDetails
-    ){
-        // yaha likhna update la
-    }
+//    @PutMapping("/edit-status")
+//    public ResponseEntity<?>editUserStatus(
+//            @RequestHeader("Authorization") String tokenHeader,
+//            @RequestBody userStatus UserStatusDetails
+//    ){
+//        // yaha likhna update la
+//    }
 
 
 
