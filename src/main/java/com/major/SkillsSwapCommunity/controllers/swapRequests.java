@@ -67,6 +67,8 @@ public class swapRequests {
                      .body(new ApiResponse<>(false,"Failed to save swap request",e.getMessage()));
          }
     }
+
+
     @GetMapping("/get-all-request")
     public ResponseEntity<?> GetAllRequest( @RequestHeader("Authorization") String tokenHeader)
     {
@@ -79,8 +81,13 @@ public class swapRequests {
            String email = JwtUtils.extractEmail(token);
 
            List<SwapRequestCardDTO> response = new ArrayList<>();
+
            List<swapRequest> receivedRequests = SwapRequestService.findAllreceiver(email);
            List<swapRequest> sentRequests = SwapRequestService.findAllsender(email);
+
+//           System.out.println(receivedRequests);
+//           System.out.println(sentRequests);
+
            List<swapRequest> allRequests = new ArrayList<>();
            allRequests.addAll(receivedRequests);
            allRequests.addAll(sentRequests);
@@ -101,6 +108,8 @@ public class swapRequests {
 
        }
     }
+
+
 
     @GetMapping("/sent-requests")
     public ResponseEntity<?> GetAllSentRequest( @RequestHeader("Authorization") String tokenHeader)

@@ -25,7 +25,7 @@ public class swapRequest {
     private String requestedSkill ;
     private String offeredSkill = null;
     private String message;
-    private String status = "pending";
+    private String status = "Pending";
 
     private LocalDateTime createdAt = LocalDateTime.now() ;
     private LocalDateTime updatedAt = LocalDateTime.now();

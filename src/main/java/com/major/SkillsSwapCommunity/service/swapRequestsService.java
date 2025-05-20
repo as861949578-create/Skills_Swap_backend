@@ -23,11 +23,11 @@ public class swapRequestsService {
 
 
     public List<swapRequest> findAllreceiver(String email) {
-       return SwapRequestRepo.findByreceiverID(email);
+       return SwapRequestRepo.findByReceiverIDOrderByCreatedAtDesc(email);
     }
 
     public List<swapRequest> findAllsender(String email) {
-        return SwapRequestRepo.findBysenderID(email);
+        return SwapRequestRepo. findBySenderIDOrderByCreatedAtDesc(email);
     }
 
     public Optional<swapRequest> findbyId(String requestId) {

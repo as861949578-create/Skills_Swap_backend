@@ -14,6 +14,10 @@ import org.springframework.stereotype.Component;
 //@Setter
 public class SwapRequestCardDTO {
 
+    private swapRequest request;
+    private UserDetails senderDetails;
+    private UserDetails receiverDetails;
+
     public swapRequest getRequest() {
         return request;
     }
@@ -44,9 +48,7 @@ public class SwapRequestCardDTO {
         this.receiverDetails = receiverDetails;
     }
 
-    private swapRequest request;
-    private UserDetails senderDetails;
-   private UserDetails receiverDetails;
+
 
 
 }
