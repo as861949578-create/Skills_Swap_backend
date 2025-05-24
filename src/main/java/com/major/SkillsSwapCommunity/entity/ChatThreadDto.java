@@ -1,5 +1,7 @@
-package com.major.SkillsSwapCommunity.entity;
+package com.major.SkillsSwapCommunity.dto;
 
+import com.major.SkillsSwapCommunity.entity.ChatMessage;
+import com.major.SkillsSwapCommunity.entity.UserDetails;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -8,7 +10,8 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 public class ChatThreadDto {
-    private UserDetails user1;
-    private UserDetails user2;
+    private String chatRoomId;
+    private UserDetails user;
 
+    private List<ChatMessage> messages; // Optional for full thread view
 }

@@ -16,10 +16,12 @@ public class ChatWebSocketController {
     @Autowired
     private chatService ChatService;
 
+
+
     @MessageMapping("/chat.sendMessage") // POST from /app/chat.sendMessage
     public void sendMessage(@Payload ChatMessage message) {
-        // Save to DB if needed here
 
+        ChatService.saveMessages(message);
 
         messagingTemplate.convertAndSend("/topic/messages/" + message.getChatRoomId(), message);
     }
