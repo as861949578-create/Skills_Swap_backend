@@ -62,17 +62,22 @@ public class chatService {
                 ObjectId SwapobjectId = new ObjectId(Swapid);
                 Optional<swapRequest> swap = swapRequestsRepo.findById(SwapobjectId);
                 String skillset = null;
+                String offeredSkill;
+                String requestedSkill;
                 if(swap.isPresent())
                 {
                     swapRequest data = swap.get();
                     if(data.getSenderID().equals(email))
                     {
-                        skillset = data.getRequestedSkill();
+                        offeredSkill = data.getOfferedSkill();
+                        requestedSkill = data.getRequestedSkill();
                     }else
                     {
-                        skillset = data.getOfferedSkill();
+                        offeredSkill = data.getRequestedSkill();
+                        requestedSkill = data.getOfferedSkill();
                     }
-                    dto.setSkillset(skillset);
+                    dto.setRequestedSkill(requestedSkill);
+                    dto.setOfferedSkill(offeredSkill);
                 }
                 if(!(room.getUser1Id().equals(userId)) ) {
                     System.out.println("yess");
