@@ -4,6 +4,7 @@ package com.major.SkillsSwapCommunity.controllers;
 import com.major.SkillsSwapCommunity.entity.ApiResponse;
 import com.major.SkillsSwapCommunity.entity.ChatMessage;
 import com.major.SkillsSwapCommunity.entity.ChatRoom;
+import com.major.SkillsSwapCommunity.jwtUtils.jwtUtils;
 import com.major.SkillsSwapCommunity.repository.chatRoomRepo;
 import com.major.SkillsSwapCommunity.service.chatService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,14 +30,21 @@ public class chatController {
  //get all chats -- side baar
  // particular user ke liye chat , jab wo click kre to
  //send message
-
+@Autowired
+private jwtUtils JwtUtils;
 
     @Autowired
     private chatService ChatService;
     @GetMapping("/rooms/{userId}")
-public ResponseEntity<?> getUserChatRooms(@PathVariable String userId) {
-        try {
-            List<com.major.SkillsSwapCommunity.dto.ChatThreadDto> rooms = ChatService.getUserChatRooms(userId);
+public ResponseEntity<?> getUserChatRooms(@PathVariable String userId , @RequestHeader("Authorization") String tokenHeader) {
+        try{
+        if (tokenHeader == null || !tokenHeader.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ApiResponse<>(false, "Missing token", null));
+        }
+        String token = tokenHeader.substring(7);
+        String email = JwtUtils.extractEmail(token);
+            List<com.major.SkillsSwapCommunity.dto.ChatThreadDto> rooms = ChatService.getUserChatRooms(userId , email);
             return ResponseEntity.ok(new ApiResponse<>(true, "fetched all chatrooms successfully", rooms));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
