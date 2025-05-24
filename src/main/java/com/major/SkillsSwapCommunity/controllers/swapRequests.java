@@ -54,8 +54,7 @@ public class swapRequests {
              );
 
              if (existingRequest.isPresent()) {
-                 return ResponseEntity.status(HttpStatus.CONFLICT)
-                         .body(new ApiResponse<>(false, "Duplicate request: You already sent a request for this skill.", null));
+                 return ResponseEntity.ok(new ApiResponse<>(false, "Duplicate request: You already sent a request for this skill.", null));
              }
 
 

@@ -51,9 +51,7 @@ public ResponseEntity<?> getUserChatRooms(@PathVariable String userId , @Request
                     .body(new ApiResponse<>(false, "Failed to get chatrooms", null));
         }
 
-}
-
-
+    }
     @PostMapping("/create-chat-room")
     public ResponseEntity<?> createChatRoom(@RequestBody ChatRoom chatRoom) {
         try {
@@ -82,13 +80,5 @@ public ResponseEntity<?> getUserChatRooms(@PathVariable String userId , @Request
                     .body(new ApiResponse<>(false, "Failed to fetch messages", e.getMessage()));
         }
     }
-
-
-
-
-
-
-
-
 
 }
