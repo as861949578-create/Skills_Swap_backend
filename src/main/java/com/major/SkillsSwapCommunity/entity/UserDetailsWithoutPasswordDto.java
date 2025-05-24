@@ -2,23 +2,18 @@ package com.major.SkillsSwapCommunity.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @Document(collection = "users")
-public class UserDetails {
+public class UserDetailsWithoutPasswordDto {
 
     private String id;
     private String name;
     private String email;
     private String contact;
-    private String password;
     private List<String> skills ;
     private String githubLink;
     private String linkedinLink;
@@ -28,13 +23,12 @@ public class UserDetails {
     private String location;
 
 
-    public UserDetails( String name, String email, String contact, List<String> skills,String password,
-                       String location, String bio, String instagramLink, String youtubeLink, String linkedinLink, String githubLink) {
+    public UserDetailsWithoutPasswordDto(String name, String email, String contact, List<String> skills,
+                                         String location, String bio, String instagramLink, String youtubeLink, String linkedinLink, String githubLink) {
         this.name = name;
         this.email = email;
         this.contact = contact;
         this.skills = skills;
-        this.password = password;
         this.location = location;
         this.bio = bio;
         this.instagramLink = instagramLink;
@@ -44,7 +38,7 @@ public class UserDetails {
     }
 
     //no args cons
-    public UserDetails() {
+    public UserDetailsWithoutPasswordDto() {
 
     }
 }

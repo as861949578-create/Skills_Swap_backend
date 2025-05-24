@@ -45,10 +45,9 @@ public class userService {
         Optional<UserDetails> currentUserDetails = findByEmail(email);
 
         if(currentUserDetails.isPresent()) {
-            UserDetails userWithoutPassword = currentUserDetails.get();
-
+            UserDetails user = currentUserDetails.get();
             return ResponseEntity.status(HttpStatus.ACCEPTED)
-                    .body(new ApiResponse<>(true, "User found", userWithoutPassword));
+                    .body(new ApiResponse<>(true, "User found", user));
         }else{
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(new ApiResponse<>(false, "User not found", null));
