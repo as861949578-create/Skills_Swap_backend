@@ -13,11 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.major.SkillsSwapCommunity.dto.ChatThreadDto;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @Component
 public class chatService {
@@ -51,10 +49,18 @@ public class chatService {
 
     public List<ChatThreadDto> getUserChatRooms(String userId , String email) {
         List<ChatRoom> rooms = ChatRoomRepo.findByUser1IdOrUser2Id(userId, userId);
-
-        System.out.println(rooms);
+        Collections.sort(rooms , Comparator.comparing(ChatRoom::getTimestamp).reversed());
+//        System.out.println(userId);
+//        System.out.println(email);
+//        System.out.println(rooms);
         List<ChatThreadDto> chatThreads = new ArrayList<>();
             for (ChatRoom room : rooms) {
+
+//                System.out.println("user1");
+//                System.out.println(room.getUser1Id());
+//                System.out.println("user2");
+//                System.out.println(room.getUser2Id());
+//                System.out.println(room.getSwapRequestId());
                 ChatThreadDto dto = new ChatThreadDto();
                 dto.setChatRoomId(room.getId());
                 UserDetails user;
@@ -80,14 +86,14 @@ public class chatService {
                     dto.setOfferedSkill(offeredSkill);
                 }
                 if(!(room.getUser1Id().equals(userId)) ) {
-                    System.out.println("yess");
+
                     user = userRepo.findById(room.getUser1Id()).orElse(null);
                 }
                 else  user = userRepo.findById(room.getUser2Id()).orElse(null);
                 dto.setUser(user);
                 chatThreads.add(dto);
             }
-        System.out.println(chatThreads);
+
             return chatThreads;
         }
     }
