@@ -74,7 +74,6 @@ public class userController {
         if(updatedUser.getBio() != null)
             existingUser.setBio(updatedUser.getBio());
 
-
         if (updatedUser.getGithubLink() != null)
             existingUser.setGithubLink(updatedUser.getGithubLink());
 
@@ -82,13 +81,13 @@ public class userController {
                 existingUser.setLinkedinLink(updatedUser.getLinkedinLink());
 
             if (updatedUser.getInstagramLink() != null)
-                existingUser.setLinkedinLink(updatedUser.getInstagramLink());
+                existingUser.setInstagramLink(updatedUser.getInstagramLink());
 
             if (updatedUser.getYoutubeLink() != null)
-                existingUser.setLinkedinLink(updatedUser.getYoutubeLink());
+                existingUser.setYoutubeLink(updatedUser.getYoutubeLink());
 
             if (updatedUser.getLocation() != null)
-                existingUser.setLinkedinLink(updatedUser.getLocation());
+                existingUser.setLocation(updatedUser.getLocation());
 
 
 

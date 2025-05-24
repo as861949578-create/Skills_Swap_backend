@@ -1,5 +1,6 @@
 package com.major.SkillsSwapCommunity.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,6 +18,7 @@ public class UserDetails {
     private String name;
     private String email;
     private String contact;
+    @JsonIgnore
     private String password;
     private List<String> skills ;
     private String githubLink;
