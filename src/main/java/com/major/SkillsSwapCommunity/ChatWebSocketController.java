@@ -22,12 +22,12 @@ public class ChatWebSocketController {
     private chatService ChatService;
 
 
-
-    @MessageMapping("/chat.sendMessage") // POST from /app/chat.sendMessage
+    @MessageMapping("/chat.sendMessage") // listen to /app/chat.sendMessage
     public void sendMessage(@Payload ChatMessage message) {
-
+        System.out.println("Received message: " + message);
         ChatService.saveMessages(message);
 
+        // Send message to all subscribed clients of this chatRoomId
         messagingTemplate.convertAndSend("/topic/messages/" + message.getChatRoomId(), message);
     }
 }
