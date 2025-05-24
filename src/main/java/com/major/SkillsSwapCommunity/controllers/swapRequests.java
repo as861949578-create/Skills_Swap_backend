@@ -47,6 +47,18 @@ public class swapRequests {
              //set email as senderID from jwt token
              swapDetails.setSenderID(email);
 
+
+             // Check if a similar request already exists
+             Optional<swapRequest> existingRequest = SwapRequestService.findBySenderReceiverAndSkill(
+                     swapDetails.getSenderID(), swapDetails.getReceiverID(), swapDetails.getRequestedSkill()
+             );
+
+             if (existingRequest.isPresent()) {
+                 return ResponseEntity.status(HttpStatus.CONFLICT)
+                         .body(new ApiResponse<>(false, "Duplicate request: You already sent a request for this skill.", null));
+             }
+
+
              if (swapDetails.getStatus() == null) {
                  swapDetails.setStatus("pending");
              }

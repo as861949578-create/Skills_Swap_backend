@@ -54,7 +54,6 @@ public ResponseEntity<?> getUserChatRooms(@PathVariable String userId , @Request
 }
 
 
-
     @PostMapping("/create-chat-room")
     public ResponseEntity<?> createChatRoom(@RequestBody ChatRoom chatRoom) {
         try {

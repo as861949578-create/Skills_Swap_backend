@@ -34,4 +34,11 @@ public class swapRequestsService {
         ObjectId id = new ObjectId(requestId);
        return SwapRequestRepo.findById(id);
     }
+
+    public Optional<swapRequest> findBySenderReceiverAndSkill(String senderId, String receiverId, String skill) {
+        return SwapRequestRepo.findFirstBySenderIDAndReceiverIDAndRequestedSkillAndStatusIn(
+                senderId, receiverId, skill, List.of("Pending", "Accepted")
+        );
+    }
+
 }
