@@ -37,8 +37,8 @@ public class chatController {
         }
     }
 
-    @GetMapping("/chat/messages/{chatRoomId}")
-    public ResponseEntity<?> getChatMessages(@PathVariable String chatRoomId) {
+    @GetMapping("/chat/messages")
+    public ResponseEntity<?> getChatMessages(@RequestParam String chatRoomId) {
         try {
             Optional<ChatRoom> chatRoomOptional = ChatService.findById(chatRoomId);
             if (chatRoomOptional.isEmpty()) {
@@ -46,7 +46,7 @@ public class chatController {
                         .body(new ApiResponse<>(false, "Chat room not found", null));
             }
 
-            List<ChatMessage> messages = ChatService.findByChatRoomIdOrderByTimestampAsc(chatRoomId);
+            List<ChatMessage> messages = ChatService.findByChatRoomIdOrderByCreatedAtAsc(chatRoomId);
 
             return ResponseEntity.ok(new ApiResponse<>(true, "Messages fetched successfully", messages));
         } catch (Exception e) {

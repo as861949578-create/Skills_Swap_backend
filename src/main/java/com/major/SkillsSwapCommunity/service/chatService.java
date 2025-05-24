@@ -26,8 +26,8 @@ public class chatService {
        return ChatRoomRepo.findById(chatRoomId);
     }
 
-    public List<ChatMessage> findByChatRoomIdOrderByTimestampAsc(String chatRoomId){
-        return ChatMessageRepo.findByChatRoomIdOrderByTimestampAsc(chatRoomId);
+    public List<ChatMessage> findByChatRoomIdOrderByCreatedAtAsc(String chatRoomId){
+        return ChatMessageRepo.findByChatRoomIdOrderByCreatedAtAsc(chatRoomId);
     }
 
 
