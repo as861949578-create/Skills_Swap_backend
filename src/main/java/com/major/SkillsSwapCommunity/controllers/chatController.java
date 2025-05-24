@@ -2,6 +2,7 @@ package com.major.SkillsSwapCommunity.controllers;
 
 
 import com.major.SkillsSwapCommunity.entity.ApiResponse;
+import com.major.SkillsSwapCommunity.entity.ChatMessage;
 import com.major.SkillsSwapCommunity.entity.ChatRoom;
 import com.major.SkillsSwapCommunity.repository.chatRoomRepo;
 import com.major.SkillsSwapCommunity.service.chatService;
@@ -15,6 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.major.SkillsSwapCommunity.dto.ChatThreadDto;
 import java.util.List;
+
+import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -53,6 +57,29 @@ public ResponseEntity<?> getUserChatRooms(@PathVariable String userId) {
                     .body(new ApiResponse<>(false, "Failed to create chat room", null));
         }
     }
+
+    @GetMapping("/room/messages")
+    public ResponseEntity<?> getChatMessages(@RequestParam String chatRoomId) {
+        try {
+            Optional<ChatRoom> chatRoomOptional = ChatService.findById(chatRoomId);
+            if (chatRoomOptional.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(new ApiResponse<>(false, "Chat room not found", null));
+            }
+
+            List<ChatMessage> messages = ChatService.findByChatRoomIdOrderByCreatedAtAsc(chatRoomId);
+
+            return ResponseEntity.ok(new ApiResponse<>(true, "Messages fetched successfully", messages));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponse<>(false, "Failed to fetch messages", e.getMessage()));
+        }
+    }
+
+
+
+
+
 
 
 
