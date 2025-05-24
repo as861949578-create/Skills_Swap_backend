@@ -26,6 +26,7 @@ public class authController {
   // call this Api when user click for Otp to verify his/her email
   @PostMapping("/signup-to-otp")
   public ResponseEntity<?> signupToOtp(@RequestBody UserDetails signUpRequest){
+    System.out.println("idahr ayaa");
     return AuthService.signupToOtp(signUpRequest);
   }
 
@@ -33,7 +34,7 @@ public class authController {
   // here comes otp
   @PostMapping("/verifyOtp")
   public ResponseEntity<?> verifyOtp(@RequestBody OtpRequest otpRequest){
-
+    System.out.println("step1" + otpRequest.getOtp());
     UserDetails signupRequest = otpRequest.getUserDetails(); // null check zaruri
     if (signupRequest == null) {
       return ResponseEntity.ok(new ApiResponse<>(false,("User details is missing"),null));

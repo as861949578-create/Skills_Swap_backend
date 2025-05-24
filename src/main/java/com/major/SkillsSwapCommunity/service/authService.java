@@ -79,9 +79,10 @@ public class authService {
 
 
     public ResponseEntity<?> verifyOtp(int enteredOtp,UserDetails signupRequest) {
+        System.out.println("step2" + enteredOtp);
 
         String email = signupRequest.getEmail();
-
+        System.out.println("step2" + email);
 
         OtpDetails otpDetails = otpStore.get(email);
 
