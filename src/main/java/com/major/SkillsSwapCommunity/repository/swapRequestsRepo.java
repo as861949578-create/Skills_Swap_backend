@@ -12,7 +12,6 @@ import java.util.Optional;
 public interface swapRequestsRepo extends MongoRepository<swapRequest,ObjectId> {
     List<swapRequest> findByReceiverIDOrderByCreatedAtDesc(String email);
     List<swapRequest> findBySenderIDOrderByCreatedAtDesc(String email);
-
 //    List<swapRequest> findByReceiverID(String receiverID);
 
     Optional<swapRequest> findFirstBySenderIDAndReceiverIDAndRequestedSkillAndStatusIn(

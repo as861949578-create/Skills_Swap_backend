@@ -2,10 +2,13 @@ package com.major.SkillsSwapCommunity.service;
 
 import com.major.SkillsSwapCommunity.entity.ChatMessage;
 import com.major.SkillsSwapCommunity.entity.ChatRoom;
+import com.major.SkillsSwapCommunity.entity.swapRequest;
 import com.major.SkillsSwapCommunity.repository.chatMessageRepo;
 import com.major.SkillsSwapCommunity.entity.UserDetails;
 import com.major.SkillsSwapCommunity.repository.authRepo;
 import com.major.SkillsSwapCommunity.repository.chatRoomRepo;
+import com.major.SkillsSwapCommunity.repository.swapRequestsRepo;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.major.SkillsSwapCommunity.dto.ChatThreadDto;
@@ -23,7 +26,8 @@ public class chatService {
 
     @Autowired
     private chatMessageRepo ChatMessageRepo;
-
+    @Autowired
+    private swapRequestsRepo swapRequestsRepo;
 
     @Autowired
     private authRepo userRepo;
@@ -45,16 +49,33 @@ public class chatService {
     }
 
 
-    public List<ChatThreadDto> getUserChatRooms(String userId) {
+    public List<ChatThreadDto> getUserChatRooms(String userId , String email) {
         List<ChatRoom> rooms = ChatRoomRepo.findByUser1IdOrUser2Id(userId, userId);
+
         System.out.println(rooms);
         List<ChatThreadDto> chatThreads = new ArrayList<>();
             for (ChatRoom room : rooms) {
                 ChatThreadDto dto = new ChatThreadDto();
                 dto.setChatRoomId(room.getId());
                 UserDetails user;
-                if(room.getUser1Id() != userId) {
-                    System.out.println("yessss");
+                String Swapid = room.getSwapRequestId();
+                ObjectId SwapobjectId = new ObjectId(Swapid);
+                Optional<swapRequest> swap = swapRequestsRepo.findById(SwapobjectId);
+                String skillset = null;
+                if(swap.isPresent())
+                {
+                    swapRequest data = swap.get();
+                    if(data.getSenderID().equals(email))
+                    {
+                        skillset = data.getRequestedSkill();
+                    }else
+                    {
+                        skillset = data.getOfferedSkill();
+                    }
+                    dto.setSkillset(skillset);
+                }
+                if(!(room.getUser1Id().equals(userId)) ) {
+                    System.out.println("yess");
                     user = userRepo.findById(room.getUser1Id()).orElse(null);
                 }
                 else  user = userRepo.findById(room.getUser2Id()).orElse(null);

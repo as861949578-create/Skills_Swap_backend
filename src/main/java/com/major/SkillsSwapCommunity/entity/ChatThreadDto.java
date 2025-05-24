@@ -12,6 +12,6 @@ import java.util.List;
 public class ChatThreadDto {
     private String chatRoomId;
     private UserDetails user;
-
+    private String skillset;
     private List<ChatMessage> messages; // Optional for full thread view
 }
