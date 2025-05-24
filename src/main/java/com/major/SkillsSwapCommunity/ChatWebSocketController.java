@@ -26,7 +26,7 @@ public class ChatWebSocketController {
     @MessageMapping("/chat.sendMessage") // POST from /app/chat.sendMessage
     public void sendMessage(@Payload ChatMessage message) {
 
-        ChatService.saveMessages(message);
+            ChatService.saveMessages(message);
 
         messagingTemplate.convertAndSend("/topic/messages/" + message.getChatRoomId(), message);
     }

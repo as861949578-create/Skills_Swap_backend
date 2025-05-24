@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface swapRequestsRepo extends MongoRepository<swapRequest,ObjectId> {
@@ -13,5 +14,8 @@ public interface swapRequestsRepo extends MongoRepository<swapRequest,ObjectId> 
     List<swapRequest> findBySenderIDOrderByCreatedAtDesc(String email);
 
 //    List<swapRequest> findByReceiverID(String receiverID);
+
+    Optional<swapRequest> findFirstBySenderIDAndReceiverIDAndReqSkillAndStatusIn(
+            String senderID, String receiverID, String reqSkill, List<String> statuses);
 
 }

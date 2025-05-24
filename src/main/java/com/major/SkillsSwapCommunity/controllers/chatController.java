@@ -36,7 +36,7 @@ public class chatController {
     @GetMapping("/rooms/{userId}")
 public ResponseEntity<?> getUserChatRooms(@PathVariable String userId) {
         try {
-            List<com.major.SkillsSwapCommunity.dto.ChatThreadDto> rooms = ChatService.getUserChatRooms(userId);
+            List<ChatThreadDto> rooms = ChatService.getUserChatRooms(userId);
             return ResponseEntity.ok(new ApiResponse<>(true, "fetched all chatrooms successfully", rooms));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -44,7 +44,6 @@ public ResponseEntity<?> getUserChatRooms(@PathVariable String userId) {
         }
 
 }
-
 
 
     @PostMapping("/create-chat-room")
