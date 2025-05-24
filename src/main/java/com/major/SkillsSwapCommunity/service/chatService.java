@@ -35,20 +35,27 @@ public class chatService {
         return ChatMessageRepo.findByChatRoomIdOrderByCreatedAtAsc(chatRoomId);
     }
 
+    public void createChatRoom(ChatRoom chatroom){
+        ChatRoomRepo.save(chatroom);
+     }
+
     public List<ChatThreadDto> getUserChatRooms(String userId) {
         List<ChatRoom> rooms = ChatRoomRepo.findByUser1IdOrUser2Id(userId, userId);
+        System.out.println(rooms);
         List<ChatThreadDto> chatThreads = new ArrayList<>();
             for (ChatRoom room : rooms) {
                 ChatThreadDto dto = new ChatThreadDto();
                 dto.setChatRoomId(room.getId());
                 UserDetails user;
-                if(room.getUser1Id() != userId)
-                 user = userRepo.findById(room.getUser1Id()).orElse(null);
+                if(room.getUser1Id() != userId) {
+                    System.out.println("yessss");
+                    user = userRepo.findById(room.getUser1Id()).orElse(null);
+                }
                 else  user = userRepo.findById(room.getUser2Id()).orElse(null);
                 dto.setUser(user);
                 chatThreads.add(dto);
             }
-
+        System.out.println(chatThreads);
             return chatThreads;
         }
     }
