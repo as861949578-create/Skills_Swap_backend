@@ -15,7 +15,7 @@ public interface swapRequestsRepo extends MongoRepository<swapRequest,ObjectId> 
 
 //    List<swapRequest> findByReceiverID(String receiverID);
 
-    Optional<swapRequest> findFirstBySenderIDAndReceiverIDAndReqSkillAndStatusIn(
-            String senderID, String receiverID, String reqSkill, List<String> statuses);
+    Optional<swapRequest> findFirstBySenderIDAndReceiverIDAndRequestedSkillAndStatusIn(
+            String senderID, String receiverID, String skill, List<String> statuses);
 
 }

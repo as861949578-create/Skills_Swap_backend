@@ -36,8 +36,8 @@ public class swapRequestsService {
     }
 
     public Optional<swapRequest> findBySenderReceiverAndSkill(String senderId, String receiverId, String skill) {
-        return SwapRequestRepo.findFirstBySenderIDAndReceiverIDAndReqSkillAndStatusIn(
-                senderId, receiverId, skill, List.of("pending", "accepted")
+        return SwapRequestRepo.findFirstBySenderIDAndReceiverIDAndRequestedSkillAndStatusIn(
+                senderId, receiverId, skill, List.of("Pending", "Accepted")
         );
     }
 

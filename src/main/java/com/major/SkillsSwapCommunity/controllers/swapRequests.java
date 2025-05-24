@@ -59,7 +59,6 @@ public class swapRequests {
              }
 
 
-
              if (swapDetails.getStatus() == null) {
                  swapDetails.setStatus("pending");
              }
