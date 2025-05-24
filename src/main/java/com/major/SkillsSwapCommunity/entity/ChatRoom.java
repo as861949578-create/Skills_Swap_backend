@@ -16,5 +16,5 @@ public class ChatRoom {
     private String user1Id;
     private String user2Id;
     private String swapRequestId;
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
 }
