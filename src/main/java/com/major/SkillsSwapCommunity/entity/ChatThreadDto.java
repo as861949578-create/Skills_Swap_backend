@@ -10,6 +10,5 @@ import java.util.List;
 public class ChatThreadDto {
     private UserDetails user1;
     private UserDetails user2;
-    private List<ChatMessage> user1Messages;
-    private List<ChatMessage> user2Messages;
+    private List<ChatMessage> messages; // Combined
 }

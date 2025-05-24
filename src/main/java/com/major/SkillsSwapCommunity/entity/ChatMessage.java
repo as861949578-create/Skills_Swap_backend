@@ -16,7 +16,8 @@ public class ChatMessage {
     private String id;
     private String senderId;
     private String receiverId;
-    private String content;
+    private String message;
     private String chatRoomId;
-    private LocalDateTime timestamp;
+    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime updatedAt = LocalDateTime.now();
 }
