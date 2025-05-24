@@ -10,4 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/chat")
 public class chatController {
 
+// chatroom created -- save into db into collection chatroom
+ //get all chats -- side baar
+ // particular user ke liye chat , jab wo click kre to
+ //send message
+
+
 }
