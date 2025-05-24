@@ -11,10 +11,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 @Document(collection = "SkillSwapRequests")
-//@Getter
-//@Setter
-//@NoArgsConstructor
-//@AllArgsConstructor
+@Data
 public class swapRequest {
 
     @Id
@@ -25,94 +22,10 @@ public class swapRequest {
     private String requestedSkill ;
     private String offeredSkill = null;
     private String message;
-    private String status = "pending";
+    private String status = "Pending";
 
     private LocalDateTime createdAt = LocalDateTime.now() ;
     private LocalDateTime updatedAt = LocalDateTime.now();
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getSenderID() {
-        return senderID;
-    }
-
-    public void setSenderID(String senderID) {
-        this.senderID = senderID;
-    }
-
-    public String getRequestedSkill() {
-        return requestedSkill;
-    }
-
-    public void setRequestedSkill(String requestedSkill) {
-        this.requestedSkill = requestedSkill;
-    }
-
-    public String getReceiverID() {
-        return receiverID;
-    }
-
-    public void setReceiverID(String receiverID) {
-        this.receiverID = receiverID;
-    }
-
-    public String getOfferedSkill() {
-        return offeredSkill;
-    }
-
-    public void setOfferedSkill(String offeredSkill) {
-        this.offeredSkill = offeredSkill;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public swapRequest(String id, String senderID, String receiverID, String requestedSkill, String offeredSkill, String message, String status, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.id = id;
-        this.senderID = senderID;
-        this.receiverID = receiverID;
-        this.requestedSkill = requestedSkill;
-        this.offeredSkill = offeredSkill;
-        this.message = message;
-        this.status = status;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-    }
 
 
 

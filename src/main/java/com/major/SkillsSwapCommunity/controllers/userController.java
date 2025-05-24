@@ -1,10 +1,9 @@
 package com.major.SkillsSwapCommunity.controllers;
 
-import com.major.SkillsSwapCommunity.entity.ApiResponse;
-import com.major.SkillsSwapCommunity.entity.UserDetails;
-import com.major.SkillsSwapCommunity.entity.userDetailsUpdate;
+import com.major.SkillsSwapCommunity.entity.*;
 import com.major.SkillsSwapCommunity.jwtUtils.jwtUtils;
 import com.major.SkillsSwapCommunity.passwordUtils.passwordUtils;
+import com.major.SkillsSwapCommunity.service.authService;
 import com.major.SkillsSwapCommunity.service.userService;
 import org.apache.catalina.User;
 import org.bson.types.ObjectId;
@@ -31,12 +30,14 @@ public class userController {
     @Autowired
     private jwtUtils JwtUtils;
 
+    @Autowired
+    private authService AuthService;
+
 
 
 
     @GetMapping("/profile")
     public ResponseEntity<?> getProfile(@RequestHeader("Authorization") String tokenHeader) {
-        System.out.println("token issss " + tokenHeader);
         return UserService.check(tokenHeader);
     }
 
@@ -62,16 +63,40 @@ public class userController {
         }
 
         // Step 2: Update the fields
+
         UserDetails existingUser = responseBody.getData();
+
+
         existingUser.setName(updatedUser.getName());
         existingUser.setSkills(updatedUser.getSkills());
         existingUser.setContact(updatedUser.getContact());
+
+        if(updatedUser.getBio() != null)
+            existingUser.setBio(updatedUser.getBio());
+
+        if (updatedUser.getGithubLink() != null)
+            existingUser.setGithubLink(updatedUser.getGithubLink());
+
+        if (updatedUser.getLinkedinLink() != null)
+                existingUser.setLinkedinLink(updatedUser.getLinkedinLink());
+
+            if (updatedUser.getInstagramLink() != null)
+                existingUser.setInstagramLink(updatedUser.getInstagramLink());
+
+            if (updatedUser.getYoutubeLink() != null)
+                existingUser.setYoutubeLink(updatedUser.getYoutubeLink());
+
+            if (updatedUser.getLocation() != null)
+                existingUser.setLocation(updatedUser.getLocation());
+
+
 
         // Step 3: Save the user
         UserService.save(existingUser);
 
         return ResponseEntity.ok(new ApiResponse<>(true, "Update successful", existingUser));
     }
+
 
 
     @GetMapping("/get-someone-profile")

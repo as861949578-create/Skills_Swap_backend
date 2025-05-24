@@ -46,7 +46,7 @@ public class userService {
 
         if(currentUserDetails.isPresent()) {
             UserDetails userWithoutPassword = currentUserDetails.get();
-            userWithoutPassword.setPassword(null);
+//            userWithoutPassword.setPassword(null);
             return ResponseEntity.status(HttpStatus.ACCEPTED)
                     .body(new ApiResponse<>(true, "User found", userWithoutPassword));
         }else{

@@ -49,10 +49,10 @@ public class authService {
     }
 
     public ResponseEntity<?> generateOtp(String email){
-        System.out.println("comes for otp " + email);
+
         Random random = new Random();
         int otp = 100000 + random.nextInt(900000); // 6-digit OTP
-        System.out.println(otp);
+
         // Save OTP with email
         otpStore.put(email, new OtpDetails(otp, System.currentTimeMillis()));
 
@@ -67,8 +67,10 @@ public class authService {
 
 
         String hashPassword = PasswordUtils.hashPassword(signupRequest.getPassword());
+
         UserDetails user = new UserDetails(signupRequest.getName(),signupRequest.getEmail(),
-                signupRequest.getContact(),signupRequest.getSkills(),hashPassword);
+                signupRequest.getContact(),signupRequest.getSkills(),hashPassword,null,null,null,null,null,
+                null);
 
         AuthRepo.save(user);
 
@@ -77,13 +79,12 @@ public class authService {
 
 
     public ResponseEntity<?> verifyOtp(int enteredOtp,UserDetails signupRequest) {
-//        System.out.println("Step6");
+
         String email = signupRequest.getEmail();
-//        System.out.println( enteredOtp);
+
 
         OtpDetails otpDetails = otpStore.get(email);
-//        System.out.println(email);
-//        System.out.println(otpDetails);
+
         if (otpDetails == null) {
             return ResponseEntity.ok(new ApiResponse<>(false,"Otp Is Null",null));
         }
@@ -141,4 +142,6 @@ public class authService {
     {
         return AuthRepo.findByEmailIgnoreCase(email);
     }
+
+
 }
