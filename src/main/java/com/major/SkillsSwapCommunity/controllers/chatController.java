@@ -37,7 +37,7 @@ public class chatController {
         }
     }
 
-    @GetMapping("/chat/messages")
+    @GetMapping("/room/messages")
     public ResponseEntity<?> getChatMessages(@RequestParam String chatRoomId) {
         try {
             Optional<ChatRoom> chatRoomOptional = ChatService.findById(chatRoomId);
