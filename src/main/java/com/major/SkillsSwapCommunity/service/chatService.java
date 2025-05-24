@@ -30,5 +30,9 @@ public class chatService {
         return ChatMessageRepo.findByChatRoomIdOrderByCreatedAtAsc(chatRoomId);
     }
 
+    public void saveMessages(ChatMessage chatmessage){
+        ChatMessageRepo.save(chatmessage);
+    }
+
 
 }
