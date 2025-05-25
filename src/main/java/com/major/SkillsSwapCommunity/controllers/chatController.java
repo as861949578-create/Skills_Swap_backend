@@ -45,6 +45,7 @@ public ResponseEntity<?> getUserChatRooms(@PathVariable String userId , @Request
         String token = tokenHeader.substring(7);
         String email = JwtUtils.extractEmail(token);
             List<com.major.SkillsSwapCommunity.dto.ChatThreadDto> rooms = ChatService.getUserChatRooms(userId , email);
+
             return ResponseEntity.ok(new ApiResponse<>(true, "fetched all chatrooms successfully", rooms));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
