@@ -29,5 +29,6 @@ public class ChatWebSocketController {
             ChatService.saveMessages(message);
 
         messagingTemplate.convertAndSend("/topic/messages/" + message.getChatRoomId(), message);
+        messagingTemplate.convertAndSend("/topic/user/" + message.getReceiverId(), message);
     }
 }
